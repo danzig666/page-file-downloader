@@ -34,6 +34,19 @@ function cacheElements() {
   for (const id of ids) elements[id] = document.getElementById(id);
 }
 
+// Pins the table header just below the sticky selection toolbar, whose height
+// changes when it wraps onto several lines.
+function trackToolbarHeight() {
+  const toolbar = document.querySelector(".selection-toolbar");
+  if (!toolbar) return;
+  const update = () => {
+    const offset = (parseFloat(getComputedStyle(toolbar).top) || 0) + toolbar.offsetHeight;
+    document.documentElement.style.setProperty("--sticky-header-top", `${Math.max(0, offset)}px`);
+  };
+  new ResizeObserver(update).observe(toolbar);
+  update();
+}
+
 function filtersFromUi() {
   return {
     query: elements.searchInput.value,
@@ -533,6 +546,7 @@ export async function initApp() {
   if (initialized) return;
   initialized = true;
   cacheElements();
+  trackToolbarHeight();
   bindEvents();
   try {
     appState = await sendMessage(MESSAGE.GET_APP_STATE);

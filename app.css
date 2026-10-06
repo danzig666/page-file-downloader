@@ -1,3 +1,5 @@
+[hidden] { display: none !important; }
+
 :root {
   color-scheme: light dark;
   --bg: #f4f6fa;
@@ -119,12 +121,12 @@ legend { color: var(--muted); font-size: 12px; margin-bottom: 5px; }
 .selection-toolbar label { display: flex; align-items: center; gap: 5px; color: var(--muted); }
 .selection-toolbar select { min-height: 31px; }
 .toolbar-spacer { flex: 1; }
-.empty-state { display: grid; place-items: center; text-align: center; min-height: 330px; color: var(--muted); }
-.empty-state > * { margin: 3px; }
-.empty-icon { font-size: 48px; width: 80px; height: 80px; border-radius: 50%; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary); }
-.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 7px rgb(23 32 51 / 4%); }
+.empty-state { padding: 10px 2px; color: var(--muted); font-size: 13px; }
+.empty-state h2 { display: inline; margin: 0; font-size: inherit; font-weight: 650; }
+.empty-state p { display: inline; margin: 0 0 0 6px; }
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: clip; box-shadow: 0 2px 7px rgb(23 32 51 / 4%); }
 .file-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12px; }
-.file-table th { position: sticky; top: 45px; z-index: 1; padding: 9px 7px; color: var(--muted); background: var(--surface-2); text-align: left; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: .025em; }
+.file-table th { position: sticky; top: var(--sticky-header-top, 45px); z-index: 1; padding: 9px 7px; color: var(--muted); background: var(--surface-2); text-align: left; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: .025em; }
 .file-table td { padding: 8px 7px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .file-table tr:last-child td { border-bottom: 0; }
 .file-table tbody tr:hover { background: color-mix(in srgb, var(--primary-soft) 45%, var(--surface)); }
