@@ -75,6 +75,7 @@ Data URLs are summarized rather than displayed in full and are size-limited. Blo
 - Server-generated downloads without a recognizable filename, type, or explicit download marker may not be inferred.
 - File sizes are normally unknown until Chrome starts a download. Embedded data URL sizes are estimated.
 - “Ask where to save” can produce one Chrome prompt per queued file and is inconvenient for large batches.
+- Other extensions that rename downloads (`chrome.downloads.onDeterminingFilename`, used by download managers and some image tools) compete with this extension's chosen filename. Chrome applies the suggestion of the most recently installed extension, so if files still keep their original names, disable the other extension or reinstall this one so it is the most recent.
 
 ## Manual test plan
 

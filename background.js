@@ -509,6 +509,20 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 });
 
+// When any other installed extension listens to onDeterminingFilename, Chrome
+// drops the filename passed to downloads.download() and uses that extension's
+// suggestion (usually the server's name). Suggesting our own path here keeps the
+// chosen name. Every download must get a suggest() call, or it stalls.
+chrome.downloads.onDeterminingFilename.addListener((download, suggest) => {
+  initialize().then(() => {
+    const entry = queue.find((item) => item.downloadId === download.id) ||
+      queue.find((item) => item.status === "starting" && item.url === download.url);
+    if (entry?.path) suggest({ filename: entry.path, conflictAction: "uniquify" });
+    else suggest();
+  }).catch(() => suggest());
+  return true;
+});
+
 chrome.downloads.onChanged.addListener((delta) => {
   void initialize().then(async () => {
     const item = queue.find((entry) => entry.downloadId === delta.id);
