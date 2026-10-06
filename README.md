@@ -2,6 +2,8 @@
 
 Page File Downloader is a dependency-free Manifest V3 Chrome extension that scans a chosen webpage for linked and embedded resources, filters and selects the results, and runs bulk downloads through a persistent background queue.
 
+![Page File Downloader showing four attachment PDFs found in a page selection, to be saved under their link text](docs/screenshot.png)
+
 The toolbar icon opens a dedicated, resizable extension window. It does not use a toolbar-attached popup. A synchronized side-panel layout is available as an alternate interface.
 
 ## Install
