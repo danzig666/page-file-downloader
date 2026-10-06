@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page File Downloader manual test page</title>
+  <meta property="og:image" content="sample-files/metadata-image.webp">
+  <style>
+    body { max-width: 850px; margin: 40px auto; font: 16px/1.5 system-ui, sans-serif; padding: 0 20px; }
+    section { margin: 26px 0; padding: 18px; border: 1px solid #ccd2df; border-radius: 10px; }
+    .background { width: 200px; height: 80px; background-image: url("sample-files/background.svg"); background-size: cover; }
+    img { max-width: 180px; }
+  </style>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "DigitalDocument",
+      "contentUrl": "sample-files/structured-data.json",
+      "encodingFormat": "application/json"
+    }
+  </script>
+</head>
+<body>
+  <h1>Downloader detection test page</h1>
+  <p>This page intentionally exposes resources through many supported discovery paths.</p>
+  <section>
+    <h2>Links and duplicates</h2>
+    <a href="sample-files/report.pdf">Annual report PDF</a>
+    <a href="./sample-files/report.pdf#page=2">Same report with fragment</a>
+    <a href="sample-files/archive.zip" download="example-package.zip">Download archive</a>
+    <a href="sample-files/data.csv?utm_source=test">CSV with tracking parameter</a>
+    <a href="download?file=quarterly-results.xlsx">Query-based spreadsheet</a>
+  </section>
+  <section>
+    <h2>Embedded media and responsive sources</h2>
+    <img src="sample-files/photo.png" alt="Sample PNG">
+    <img srcset="sample-files/small.jpg 1x, sample-files/large.jpg 2x" alt="Responsive image">
+    <video controls src="sample-files/demo.mp4"><track src="sample-files/captions.vtt" kind="captions"></video>
+    <audio controls src="sample-files/audio.mp3"></audio>
+    <div class="background" aria-label="CSS background image"></div>
+  </section>
+  <section>
+    <h2>Lazy, data, and text discovery</h2>
+    <img data-lazy-src="sample-files/lazy.webp" alt="Lazy image">
+    <div data-file="sample-files/manual.docx">Lazy document attribute</div>
+    <img alt="Embedded pixel" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+    <p>Visible direct URL: https://example.com/downloads/public-example.pdf</p>
+    <button id="addDynamicButton" type="button">Add a dynamic link</button>
+    <div id="dynamicTarget"></div>
+  </section>
+  <script src="dynamic.js"></script>
+</body>
+</html>

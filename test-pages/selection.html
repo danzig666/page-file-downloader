@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Selection and link-text naming test page</title>
+  <style>
+    body { max-width: 850px; margin: 40px auto; font: 16px/1.5 system-ui, sans-serif; padding: 0 20px; }
+    section { margin: 26px 0; padding: 18px; border: 1px solid #ccd2df; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Selection and link-text naming test page</h1>
+  <p>Select only the attachment list below, then scan: only the four attachment PDFs should be found.
+    With “Save as: Link text”, each is saved as e.g. <code>2. melléklet a 24_2005. (XII. 23.) önkormányzati rendelethez.pdf</code>.</p>
+  <section id="before">
+    <h2>Outside the selection</h2>
+    <a href="sample-files/report.pdf">Annual report PDF</a>
+    <img src="sample-files/photo.png" alt="Sample PNG">
+  </section>
+  <section id="attachments">
+    <h2>Mellékletek</h2>
+    <div class="mellekletCimke rPC"><span><a href="/document/aa/aaaaLL_EJR_56677646-1_Melleklet.pdf" target="_blank" class="resource_link">
+      <p>1. melléklet a 24/2005. (XII. 23.) önkormányzati rendelethez</p></a></span></div>
+    <div class="mellekletCimke rPC"><span><a href="/document/0f/0f3aLL_EJR_56677647-2_Belter_leti_szab_lyoz_si_terv.pdf" target="_blank" class="resource_link">
+      <p>2. melléklet a 24/2005. (XII. 23.) önkormányzati rendelethez</p></a></span></div>
+    <div class="mellekletCimke rPC"><span><a href="/document/1a/1adcLL_EJR_56677649-3_Telepuleskepvedelem_szab_Nagyrabe_jh.pdf" target="_blank" class="resource_link">
+      <p>3. melléklet a 24/2005. (XII. 23.) önkormányzati rendelethez</p></a></span></div>
+    <div class="mellekletCimke rPC"><span><a href="/document/d4/d4ebLL_EJR_56678152-4_Szabalyozas_3sz_terulet_mod2014_Nagyrabe_jh.pdf" target="_blank" class="resource_link">
+      <p>4. melléklet a 24/2005. (XII. 23.) önkormányzati rendelethez</p></a></span></div>
+  </section>
+  <section id="after">
+    <h2>Also outside the selection</h2>
+    <a href="sample-files/archive.zip" download="example-package.zip">Download archive</a>
+    <p>Visible direct URL: https://example.com/downloads/public-example.pdf</p>
+  </section>
+</body>
+</html>

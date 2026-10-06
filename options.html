@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page File Downloader Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header>
+      <img src="icons/icon48.png" alt="">
+      <div><h1>Page File Downloader settings</h1><p>Changes apply to new scans and downloads.</p></div>
+    </header>
+    <form id="settingsForm">
+      <section>
+        <h2>Interface</h2>
+        <label>Default interface
+          <select name="defaultInterface"><option value="window">Standalone window</option><option value="sidepanel">Side panel</option></select>
+        </label>
+        <label class="check"><input name="rememberWindowGeometry" type="checkbox"> Remember application-window size and position</label>
+        <label class="check"><input name="autoScan" type="checkbox"> Automatically scan after opening</label>
+        <label class="check"><input name="rememberTarget" type="checkbox"> Remember the most recent target tab</label>
+        <label class="check"><input name="rememberScan" type="checkbox"> Remember the latest scan until browser restart</label>
+      </section>
+      <section>
+        <h2>Filtering and discovery</h2>
+        <div class="grid">
+          <label>Default filter mode
+            <select name="defaultFilterMode"><option value="plain">Plain text</option><option value="wildcard">Wildcard</option><option value="regex">Regular expression</option></select>
+          </label>
+          <label>Default match target
+            <select name="matchTarget"><option value="filename">Filename</option><option value="url">Full URL</option></select>
+          </label>
+          <label>Default categories <span>comma-separated</span><input name="defaultCategories" type="text" placeholder="document, image"></label>
+          <label>Custom extensions <span>comma-separated</span><input name="customExtensions" type="text" placeholder="epub, apk"></label>
+          <label>Maximum raw candidates<input name="maxCandidates" type="number" min="100" max="50000"></label>
+          <label>Maximum displayed results<input name="maxDisplayedResults" type="number" min="100" max="20000"></label>
+        </div>
+        <label class="check"><input name="caseSensitive" type="checkbox"> Case-sensitive filtering by default</label>
+        <label class="check"><input name="ignoreFragments" type="checkbox"> Ignore URL fragments during duplicate detection</label>
+        <label class="check"><input name="ignoreTrackingParameters" type="checkbox"> Ignore common tracking parameters</label>
+        <label class="check"><input name="watchPage" type="checkbox"> Watch the target page and mark results stale when content changes</label>
+        <label class="check"><input name="scanSelectionOnly" type="checkbox"> When part of the page is selected, scan only the selection</label>
+      </section>
+      <section>
+        <h2>Metadata and embedded resources</h2>
+        <label class="check"><input name="inspectMetadata" type="checkbox"> Enable optional metadata inspection when supported</label>
+        <div class="grid">
+          <label>Metadata request concurrency<input name="metadataConcurrency" type="number" min="1" max="10"></label>
+          <label>Data URL limit (MB)<input name="dataLimitMb" type="number" min="1" max="3"></label>
+        </div>
+        <p class="hint">Blob URLs are page-bound and always listed as unsupported. Metadata requests never bypass site access controls.</p>
+      </section>
+      <section>
+        <h2>Downloads</h2>
+        <div class="grid">
+          <label>Maximum concurrent downloads<input name="downloadConcurrency" type="number" min="1" max="12"></label>
+          <label>Default folder template<input name="downloadFolder" type="text"></label>
+          <label>Name downloaded files after
+            <select name="filenameSource"><option value="page">Page-supplied filename</option><option value="linkText">Link text (keeps the page-supplied extension)</option></select>
+          </label>
+        </div>
+        <p class="hint">Supported placeholders: <code>{hostname}</code>, <code>{pageTitle}</code>, and <code>{date}</code>.</p>
+        <label class="check"><input name="askWhereToSave" type="checkbox"> Ask where to save each download</label>
+      </section>
+      <div class="actions">
+        <button class="primary" type="submit">Save settings</button>
+        <button id="resetButton" type="button">Reset to defaults</button>
+        <button id="exportButton" type="button">Export settings</button>
+        <label class="file-button">Import settings<input id="importInput" type="file" accept="application/json,.json"></label>
+        <span id="status" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+  </main>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

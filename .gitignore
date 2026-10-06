@@ -1,0 +1,10 @@
+# Local backups and archives
+*.7z
+*.zip
+!test-pages/sample-files/*.zip
+
+# Editor / OS files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

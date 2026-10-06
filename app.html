@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page File Downloader</title>
+  <link rel="icon" href="icons/icon32.png">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button id="sidebarToggle" class="icon-button mobile-only" type="button" aria-label="Toggle filters">☰</button>
+      <img class="brand-icon" src="icons/icon48.png" alt="">
+      <div class="brand">
+        <strong>Page File Downloader</strong>
+        <span id="targetHost">No target page</span>
+      </div>
+      <div class="target-controls">
+        <label class="sr-only" for="tabSelect">Target browser tab</label>
+        <select id="tabSelect" aria-label="Target browser tab">
+          <option value="">Choose a tab…</option>
+        </select>
+        <button id="refreshTabsButton" class="icon-button" type="button" title="Refresh tab list" aria-label="Refresh tab list">↻</button>
+        <button id="currentTabButton" class="secondary" type="button">Use current browser tab</button>
+        <button id="focusTabButton" class="secondary compact" type="button">Switch to target</button>
+      </div>
+      <button id="scanButton" class="primary" type="button">Scan page</button>
+      <button id="activityButton" class="activity-button" type="button" aria-label="Show download activity">
+        <span class="status-dot" aria-hidden="true"></span><span id="activityText">Idle</span>
+      </button>
+      <button id="sidePanelButton" class="icon-button" type="button" title="Open in side panel" aria-label="Open in side panel">◧</button>
+      <button id="settingsButton" class="icon-button" type="button" title="Settings" aria-label="Settings">⚙</button>
+    </header>
+
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+    <div class="workspace">
+      <aside id="filterSidebar" class="filter-sidebar" aria-label="Filters">
+        <div class="sidebar-heading">
+          <h2>Filters</h2>
+          <button id="collapseSidebarButton" class="icon-button" type="button" aria-label="Collapse filters">‹</button>
+        </div>
+        <details open>
+          <summary>Search expression</summary>
+          <div class="filter-group">
+            <label for="searchInput">Filename or URL</label>
+            <input id="searchInput" type="search" placeholder="*.pdf, invoice*, !thumb*" autocomplete="off">
+            <div class="field-row">
+              <label><span>Mode</span>
+                <select id="modeSelect">
+                  <option value="plain">Plain text</option>
+                  <option value="wildcard">Wildcard</option>
+                  <option value="regex">Regular expression</option>
+                </select>
+              </label>
+              <label><span>Match</span>
+                <select id="matchTargetSelect">
+                  <option value="filename">Filename</option>
+                  <option value="url">Full URL</option>
+                </select>
+              </label>
+            </div>
+            <label class="check"><input id="caseSensitiveInput" type="checkbox"> Case sensitive</label>
+            <p class="hint">Separate patterns with commas. Prefix exclusions with <code>!</code>. Wildcards: <code>*</code> and <code>?</code>.</p>
+            <p id="filterError" class="field-error" role="alert"></p>
+          </div>
+        </details>
+        <details open>
+          <summary>File type</summary>
+          <div class="filter-group">
+            <fieldset>
+              <legend>Category</legend>
+              <p class="filter-help">If none are checked, every category is shown.</p>
+              <div id="categoryFilters" class="check-grid">
+                <label><input type="checkbox" value="document"> Documents</label>
+                <label><input type="checkbox" value="spreadsheet"> Spreadsheets</label>
+                <label><input type="checkbox" value="presentation"> Presentations</label>
+                <label><input type="checkbox" value="image"> Images</label>
+                <label><input type="checkbox" value="audio"> Audio</label>
+                <label><input type="checkbox" value="video"> Video</label>
+                <label><input type="checkbox" value="archive"> Archives</label>
+                <label><input type="checkbox" value="text"> Text</label>
+                <label><input type="checkbox" value="data"> Data</label>
+                <label><input type="checkbox" value="other"> Other</label>
+              </div>
+            </fieldset>
+            <label for="extensionInput">Extensions</label>
+            <input id="extensionInput" type="text" placeholder="pdf, docx, png">
+          </div>
+        </details>
+        <details>
+          <summary>Source</summary>
+          <div class="filter-group">
+            <fieldset>
+              <legend>Source type</legend>
+              <p class="filter-help">If none are checked, every source is shown.</p>
+              <div id="sourceFilters" class="check-grid">
+                <label><input type="checkbox" value="anchor"> Links</label>
+                <label><input type="checkbox" value="image"> Images</label>
+                <label><input type="checkbox" value="video"> Video</label>
+                <label><input type="checkbox" value="audio"> Audio</label>
+                <label><input type="checkbox" value="background-image"> CSS backgrounds</label>
+                <label><input type="checkbox" value="structured-data"> Structured data</label>
+                <label><input type="checkbox" value="visible-text"> Page text</label>
+                <label><input type="checkbox" value="data-attribute"> Data attributes</label>
+              </div>
+            </fieldset>
+          </div>
+        </details>
+        <details>
+          <summary>Size and availability</summary>
+          <div class="filter-group">
+            <div class="field-row">
+              <label><span>Minimum MB</span><input id="minSizeInput" type="number" min="0" step="0.1"></label>
+              <label><span>Maximum MB</span><input id="maxSizeInput" type="number" min="0" step="0.1"></label>
+            </div>
+            <label for="sizeStateSelect">Size information</label>
+            <select id="sizeStateSelect">
+              <option value="any">Known or unknown</option>
+              <option value="known">Known only</option>
+              <option value="unknown">Unknown only</option>
+            </select>
+            <label for="downloadableSelect">Downloadability</label>
+            <select id="downloadableSelect">
+              <option value="any">All results</option>
+              <option value="yes">Downloadable only</option>
+              <option value="no">Unsupported only</option>
+            </select>
+            <label for="minOccurrencesInput">Minimum occurrences</label>
+            <input id="minOccurrencesInput" type="number" min="1" value="1">
+          </div>
+        </details>
+        <div class="sidebar-actions">
+          <button id="resetFiltersButton" class="secondary" type="button">Reset filters</button>
+          <button id="savePresetButton" class="secondary" type="button">Save preset</button>
+          <select id="presetSelect" aria-label="Load filter preset"><option value="">Load preset…</option></select>
+        </div>
+      </aside>
+
+      <main id="resultArea" class="result-area" tabindex="0">
+        <section class="summary-card" aria-labelledby="summaryHeading">
+          <div>
+            <h1 id="summaryHeading">Choose a page to scan</h1>
+            <p id="summaryText">Select an open browser tab, then scan its currently loaded content.</p>
+          </div>
+          <div id="scanStats" class="scan-stats"></div>
+        </section>
+
+        <section class="selection-toolbar" aria-label="Selection and sorting">
+          <button id="selectVisibleButton" class="secondary" type="button">Select all visible</button>
+          <button id="selectAllButton" class="secondary" type="button">Select all discovered</button>
+          <button id="invertVisibleButton" class="secondary" type="button">Invert visible</button>
+          <button id="deselectVisibleButton" class="secondary" type="button">Deselect visible</button>
+          <button id="toolbarDownloadButton" class="primary toolbar-download" type="button" disabled>Download all selected</button>
+          <span class="toolbar-spacer"></span>
+          <label class="filename-source" title="Name downloaded files after the page-supplied filename or after the link text (keeping the page-supplied extension)">Save as
+            <select id="filenameSourceSelect">
+              <option value="page">Page filename</option>
+              <option value="linkText">Link text</option>
+            </select>
+          </label>
+          <label>Sort
+            <select id="sortSelect">
+              <option value="discoveryIndex">Discovery order</option>
+              <option value="filename">Filename</option>
+              <option value="extension">Extension</option>
+              <option value="category">Category</option>
+              <option value="sizeBytes">Size</option>
+              <option value="hostname">Hostname</option>
+              <option value="sourceType">Source</option>
+              <option value="occurrenceCount">Occurrences</option>
+            </select>
+          </label>
+          <button id="sortDirectionButton" class="icon-button" type="button" aria-label="Toggle sort direction">↑</button>
+        </section>
+
+        <div id="emptyState" class="empty-state">
+          <div class="empty-icon" aria-hidden="true">⇩</div>
+          <h2>No scan results yet</h2>
+          <p>Scan a regular webpage to find linked and embedded files.</p>
+        </div>
+
+        <div id="tableWrap" class="table-wrap" hidden>
+          <table class="file-table">
+            <thead>
+              <tr>
+                <th class="select-cell"><input id="headerCheckbox" type="checkbox" aria-label="Select all visible files"></th>
+                <th>Type</th><th>Filename</th><th>Ext.</th><th>Category</th><th>Size</th>
+                <th>Source</th><th>Host</th><th>Found</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+          </table>
+          <button id="loadMoreButton" class="load-more" type="button" hidden>Show 200 more</button>
+        </div>
+      </main>
+    </div>
+
+    <footer class="action-bar">
+      <div class="counts">
+        <strong id="visibleCount">0 visible</strong><span id="totalCount">0 total</span>
+        <span id="selectedCount">0 selected</span><span id="selectedSize">0 B known</span>
+      </div>
+      <div id="selectionNote" class="selection-note"></div>
+      <div class="action-progress"><progress id="downloadProgress" max="1" value="0"></progress><span id="progressText">No active downloads</span></div>
+      <button id="deselectAllButton" class="secondary" type="button">Deselect all</button>
+      <button id="downloadButton" class="primary download-button" type="button" disabled>Download all selected</button>
+    </footer>
+  </div>
+
+  <aside id="detailDrawer" class="drawer" aria-labelledby="detailTitle" aria-hidden="true">
+    <div class="drawer-header"><h2 id="detailTitle">File details</h2><button id="closeDetailButton" class="icon-button" type="button" aria-label="Close details">×</button></div>
+    <div id="detailContent" class="drawer-content"></div>
+  </aside>
+
+  <aside id="queueDrawer" class="drawer queue-drawer" aria-labelledby="queueTitle" aria-hidden="true">
+    <div class="drawer-header"><h2 id="queueTitle">Download activity</h2><button id="closeQueueButton" class="icon-button" type="button" aria-label="Close download activity">×</button></div>
+    <div class="drawer-toolbar">
+      <button id="retryAllButton" class="secondary" type="button">Retry failed</button>
+      <button id="cancelQueuedButton" class="secondary" type="button">Cancel waiting</button>
+      <button id="clearCompletedButton" class="secondary" type="button">Clear finished</button>
+    </div>
+    <div id="queueContent" class="drawer-content"></div>
+  </aside>
+  <div id="scrim" class="scrim" hidden></div>
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
