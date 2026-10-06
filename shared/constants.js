@@ -55,7 +55,7 @@ export const DEFAULT_SETTINGS = Object.freeze({
   inspectMetadata: false,
   metadataConcurrency: 3,
   downloadConcurrency: 4,
-  downloadFolder: "Page File Downloader/{hostname}/{date}/",
+  downloadFolder: "",
   filenameSource: "page",
   askWhereToSave: false,
   scanSelectionOnly: true,
